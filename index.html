@@ -32,11 +32,12 @@
     <!-- MAIN GAME LAYER -->
     <div id="game-main">
       <div class="background-houses" id="background-houses"></div>
+      <div class="ground-hitbox">
+        <!-- Player and Dog are now inside the invisible ground-hitbox layer -->
+        <img src="img/2d_Character.png" class="player" id="player" alt="Player" style="display:none"/>
+        <img src="img/2d_aggressive_dog.jpg" class="dog" id="dog" alt="Dog" style="display:none"/>
+      </div>
       <div class="ground"></div>
-      <!-- Player -->
-      <img src="img/2d_Character.png" class="player" id="player" alt="Player" style="display:none"/>
-      <!-- Dog -->
-      <img src="img/2d_aggressive_dog.jpg" class="dog" id="dog" alt="Dog" style="display:none"/>
       <!-- Doors & Hydrants will be injected dynamically -->
       <div class="confetti" id="confetti">🎉 Delivered!</div>
     </div>

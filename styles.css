@@ -167,7 +167,7 @@ body {
   transition: background-position 0.1s linear;
 }
 .ground {
-  position: absolute;
+  position: relative; /* Make ground the positioned ancestor */
   left: 0; right: 0; bottom: 0;
   height: 45px;
   background: var(--ground);
@@ -175,32 +175,39 @@ body {
   box-shadow: 0 -3px 16px #0003;
   /* no blue! */
 }
+.ground-hitbox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 120px; /* Sits directly above the yellow ground */
+  height: 150px;  /* Adjust this so the top matches the grass level */
+  /* background: rgba(0,255,0,0.1);  Uncomment for debugging */
+  z-index: 10;
+}
 
 /* Game objects (player, dog, obstacles, doors) */
 .player {
   position: absolute;
-  bottom: 179px; /* This puts the bottom of the player box on the grass */
+  bottom: 0; /* Stand on top of the yellow ground */
   left: 170px;
   width: 70px;
   height: 120px;
   z-index: 30;
   filter: drop-shadow(1px 3px 7px #3333);
   transition: bottom 0.08s;
-  border: 2px dashed red; /* Debug: shows where the player box is */
   object-fit: contain; /* Make sure the image scales nicely */
   margin: 0;
   padding: 0;
 }
 .dog {
   position: absolute;
-  bottom: 179px; /* This puts the bottom of the dog box on the grass */
+  bottom: 0; /* Stand on top of the yellow ground */
   left: -40px;
   width: 110px;
   height: 70px;
   z-index: 20;
   transition: left 0.13s;
   filter: drop-shadow(1px 2px 4px #0005);
-  border: 2px dashed blue; /* Debug: shows where the dog box is */
   object-fit: contain;
   margin: 0;
   padding: 0;
