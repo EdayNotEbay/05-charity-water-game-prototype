@@ -25,6 +25,9 @@ const DOOR_HEIGHT = 100;
 const HYDRANT_WIDTH =  18;
 const HYDRANT_HEIGHT = 36;
 
+// Only 2 door positions for the 2 houses with doors
+const doorPositions = [130, 590]; // Adjust these numbers for perfect alignment
+
 // ====== GAME STATE ======
 let gameState = "start"; // start, running, gameover
 let distance = 0;
@@ -42,6 +45,9 @@ let jumpVel = 0;
 let dogX = DOG_START_X;
 let dogChasing = false;
 let confettiTimer = null;
+
+// Add a variable to track the last background cycle
+let lastCycle = 0;
 
 // ====== DOM ELEMENTS ======
 const startOverlay = document.getElementById('start-overlay');
@@ -189,14 +195,14 @@ function gameTick() {
     dogImg.style.left = px(dogX);
   }
 
-  // ==== SPAWN OBSTACLES & DOORS ====
-  if (backgroundPos < -nextDoorX) {
-    spawnDoor();
-    nextDoorX += DOOR_SPAWN_DIST + rand(-60, 40);
-  }
-  if (backgroundPos < -nextObstacleX) {
-    spawnObstacle();
-    nextObstacleX += rand(OBSTACLE_MIN_DIST, OBSTACLE_MAX_DIST);
+  // Calculate the current background cycle (how many times the image has repeated)
+  const bgImageWidth = 900; // Set this to the width of your background image in px
+  const currentCycle = Math.floor(Math.abs(backgroundPos) / bgImageWidth);
+
+  // If we've entered a new cycle, spawn two doors at the correct positions
+  if (currentCycle > lastCycle) {
+    lastCycle = currentCycle;
+    spawnDoorCycle();
   }
 
   // ==== HANDLE COLLISIONS ====
@@ -253,20 +259,35 @@ function gameTick() {
   }
 }
 
-// ====== SPAWNERS ======
-function spawnDoor() {
-  const el = document.createElement('div');
-  el.className = 'door';
-  el.style.left = px(GAME_WIDTH + 35);
-  gameMain.appendChild(el);
-  objects.push({ type: 'door', x: GAME_WIDTH + 35, el, delivered: false });
+// Spawn both doors for the current cycle
+function spawnDoorCycle() {
+  for (let i = 0; i < doorPositions.length; i++) {
+    const el = document.createElement('div');
+    el.className = 'door';
+    gameMain.appendChild(el);
+    // Place each door at the correct spot for this cycle
+    const x = GAME_WIDTH + doorPositions[i];
+    objects.push({ type: 'door', x, el, delivered: false });
+  }
 }
+
+// ====== SPAWNERS ======
 function spawnObstacle() {
   const el = document.createElement('div');
   el.className = 'hydrant';
-  el.style.left = px(GAME_WIDTH + rand(80, 170));
+  let hydrantOffset;
+  let tooClose;
+  do {
+    // Pick a random offset for the hydrant (relative to the scrolling world)
+    hydrantOffset = Math.floor(rand(100, GAME_WIDTH - 100));
+    // Make sure it's not too close to any door position
+    tooClose = doorPositions.some(doorLeft => Math.abs(doorLeft - hydrantOffset) < 120);
+  } while (tooClose);
+  // Do NOT set el.style.left here; it will be set in the game loop
   gameMain.appendChild(el);
-  objects.push({ type: 'hydrant', x: GAME_WIDTH + rand(80, 170), el });
+  // Start just off the right edge, plus the random offset
+  const x = GAME_WIDTH + hydrantOffset;
+  objects.push({ type: 'hydrant', x, el });
 }
 
 // ====== JUMP LOGIC ======
