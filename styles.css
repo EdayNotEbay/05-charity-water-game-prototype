@@ -135,8 +135,7 @@ body {
 .player-img {
   width: 70px;
   height: 120px;
-  margin-right: -28px;
-  margin-bottom: -15px;
+  margin: 0;
   z-index: 2;
 }
 .houses-img {
@@ -150,16 +149,18 @@ body {
   width: 100%;
   flex: 1;
   overflow: hidden;
-  position: relative;
+  position: relative; /* Make this container positioned for absolute children */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
 .background-houses {
   position: absolute;
-  left: 0; top: 0; width: 100%; height: 78%;
+  left: 0; top: 0;
+  width: 100%;
+  height: calc(100% - 45px); /* Fill down to the yellow ground */
   z-index: 1;
-  background: url('img/2d_Houses.png');
+  background: url('img/2d_Houses_edit.png');
   background-size: auto 100%;
   background-repeat: repeat-x;
   background-position-x: 0;
@@ -178,29 +179,38 @@ body {
 /* Game objects (player, dog, obstacles, doors) */
 .player {
   position: absolute;
-  bottom: 48px;
+  bottom: 179px; /* This puts the bottom of the player box on the grass */
   left: 170px;
   width: 70px;
   height: 120px;
   z-index: 30;
   filter: drop-shadow(1px 3px 7px #3333);
   transition: bottom 0.08s;
+  border: 2px dashed red; /* Debug: shows where the player box is */
+  object-fit: contain; /* Make sure the image scales nicely */
+  margin: 0;
+  padding: 0;
 }
 .dog {
   position: absolute;
-  bottom: 48px;
-  left: -40px; /* farther left now! */
+  bottom: 179px; /* This puts the bottom of the dog box on the grass */
+  left: -40px;
   width: 110px;
   height: 70px;
   z-index: 20;
   transition: left 0.13s;
   filter: drop-shadow(1px 2px 4px #0005);
+  border: 2px dashed blue; /* Debug: shows where the dog box is */
+  object-fit: contain;
+  margin: 0;
+  padding: 0;
 }
 
 /* Door (clickable) */
 .door {
   position: absolute;
-  bottom: 48px;
+  /* Place the door on the grass */
+  bottom: 179px; /* Move door down to touch the grass */
   width: 56px;
   height: 100px;
   background: #fff;
@@ -230,7 +240,8 @@ body {
 /* Obstacles (hydrant) now 30% player size */
 .hydrant {
   position: absolute;
-  bottom: 48px;
+  /* Place the hydrant on the grass */
+  bottom: 179px; /* Move hydrant down to touch the grass */
   width: 18px;
   height: 36px;
   background: #ec3b18;

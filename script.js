@@ -17,8 +17,8 @@ const OBSTACLE_MAX_DIST = 410;
 const TICK_INTERVAL = 18; // ms, ~55fps
 const JUMP_VELOCITY = 15;
 const GRAVITY = 1.09;
-const PLAYER_WIDTH = 65;
-const PLAYER_HEIGHT = 100;
+const PLAYER_WIDTH = 50;
+const PLAYER_HEIGHT = 120;
 const DOG_WIDTH = 100;
 const DOOR_WIDTH = 56;
 const DOOR_HEIGHT = 100;
@@ -220,16 +220,22 @@ function gameTick() {
         obj.el.classList.remove("glow");
       }
     }
-    // Hydrant collision
+    // Hydrant collision (hitbox matches hydrant size exactly)
     if (obj.type === "hydrant") {
       const hydrantLeft = obj.x;
       const hydrantRight = hydrantLeft + HYDRANT_WIDTH;
+      const hydrantTop = PLAYER_Y; // ground level
+      const hydrantBottom = hydrantTop + HYDRANT_HEIGHT;
+      const playerLeft = PLAYER_X;
+      const playerRight = playerLeft + PLAYER_WIDTH;
       const playerBottom = playerY;
-      if (
-        PLAYER_X + PLAYER_WIDTH > hydrantLeft + 8 &&
-        PLAYER_X < hydrantRight - 4 &&
-        playerBottom < PLAYER_Y + 50 // not jumped over
-      ) {
+      const playerTop = playerBottom + PLAYER_HEIGHT;
+
+      // Check for overlap in X and Y (simple rectangle collision)
+      const overlapX = playerRight > hydrantLeft && playerLeft < hydrantRight;
+      const overlapY = playerBottom < hydrantBottom && playerTop > hydrantTop;
+
+      if (overlapX && overlapY) {
         triggerDogChase();
       }
     }
