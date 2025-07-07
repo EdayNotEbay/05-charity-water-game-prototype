@@ -220,13 +220,13 @@ body {
   bottom: 179px; /* Move door down to touch the grass */
   width: 56px;
   height: 100px;
+  background: #fff;
   border: 3px solid #ddd;
   border-radius: 5px;
   z-index: 15;
   transition: box-shadow 0.15s, border 0.15s;
   cursor: pointer;
   box-sizing: border-box;
-  background: FFC907;
 }
 .door.glow {
   box-shadow: 0 0 22px 8px var(--glow-blue), 0 0 0 3px #20d8ff;
@@ -248,7 +248,7 @@ body {
 .hydrant {
   position: absolute;
   /* Place the hydrant on the grass */
-  bottom: 0; /* Sit on top of the yellow ground, just like player and dog */
+  bottom: 179px; /* Move hydrant down to touch the grass */
   width: 18px;
   height: 36px;
   background: #ec3b18;
@@ -343,32 +343,6 @@ body {
 .reset-btn:hover {
   background: #3a3a3a;
   color: #fff7b6;
-}
-
-/* Invisible hitbox for blue houses */
-.blue-house-hitbox {
-  position: absolute;
-  width: 170px;   /* Set to match blue house width */
-  height: 150px;  /* Set to match blue house height */
-  /* Adjust left and bottom to match blue house position */
-  left: 130px;    /* Example value, adjust as needed */
-  bottom: 120px;  /* Example value, adjust as needed */
-  border: 2px dashed blue;  /* Uncomment for debugging */
-  pointer-events: none;
-  opacity: 0;
-}
-
-/* Invisible hitbox for red houses */
-.red-house-hitbox {
-  position: absolute;
-  width: 170px;   /* Set to match red house width */
-  height: 150px;  /* Set to match red house height */
-  /* Adjust left and bottom to match red house position */
-  left: 590px;    /* Example value, adjust as needed */
-  bottom: 120px;  /* Example value, adjust as needed */
- border: 2px dashed red; 
-  pointer-events: none;
-  opacity: 0;
 }
 
 /* Responsive for mobile */
